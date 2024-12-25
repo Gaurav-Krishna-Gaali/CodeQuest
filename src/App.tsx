@@ -1,13 +1,12 @@
-import CodeEditor from "./components/CodeEditor";
-import Header from "./components/Header";
-import Questions from "./components/Question";
-import TestCases from "./components/Testcases";
+import CodeEditor from "./components/CodeEditor.jsx";
+import Header from "./components/Header.jsx";
+import Questions from "./components/Question.jsx";
+import TestCases from "./components/Testcases.jsx";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "./components/ui/resizable";
-import { Editor } from "@monaco-editor/react";
+} from "./components/ui/resizable.jsx";
 
 function App() {
   return (
