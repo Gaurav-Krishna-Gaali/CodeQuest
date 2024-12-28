@@ -29,6 +29,7 @@ const initialTestCases: TestCase[] = [
 ];
 
 const TestCases = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [testCases, setTestCases] = useState<TestCase[]>(initialTestCases);
 
   return (

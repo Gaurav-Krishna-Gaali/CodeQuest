@@ -27,6 +27,7 @@ const questions: Question[] = [
   },
 ];
 const Questions = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null
   );
