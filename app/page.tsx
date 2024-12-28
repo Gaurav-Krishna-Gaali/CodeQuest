@@ -3,6 +3,7 @@ import React from "react";
 import Header from "./Header";
 import CodeEditor from "./CodeEditor";
 import Questions from "./Questions";
+import TestCases from "./TestCases";
 
 const page = () => {
   return (
@@ -12,6 +13,7 @@ const page = () => {
         <CodeEditor />
         <div className="space-y-4">
           <Questions />
+          <TestCases />
         </div>
       </div>
     </div>

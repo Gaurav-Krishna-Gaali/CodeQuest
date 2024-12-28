@@ -36,7 +36,7 @@ const Questions = () => {
         <CardTitle className="text-white">Questions</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[40vh] pr-4">
+        <ScrollArea className="h-[60vh] pr-4">
           <div className="space-y-4">
             {questions.map((question) => (
               <Card
