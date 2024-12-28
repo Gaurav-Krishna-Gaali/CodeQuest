@@ -6,14 +6,14 @@ import React from "react";
 
 const CodeEditor = () => {
   return (
-    <Card className="bg-zinc-900 flex flex-col">
+    <Card className="bg-zinc-900 border-zinc-800 flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-white">Code Editor</CardTitle>
         <Button className="bg-blue-800 hover:bg-blue-700"> Run Code</Button>
       </CardHeader>
       <CardContent className="flex-1 p-0">
         <Editor
-          height="100vh"
+          height="100%"
           theme="vs-dark"
           defaultLanguage="python"
           //   value={code}
