@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 const CodeEditor = () => {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,7 @@ const CodeEditor = () => {
   const callAPI = async () => {
     try {
       const res = await fetch(
+        // PS: this is not my API key, feel free to steal! (Found it on docs)
         `https://g.tenor.com/v1/random?q=brahmi&key=LIVDSRZULELA`
       );
       const data = await res.json();
@@ -69,8 +71,11 @@ const CodeEditor = () => {
                 time! 🌶️
               </DialogDescription>
             </DialogHeader>
-            <img
-              src={gifURL} // Replace with your desired GIF URL
+            <Image
+              unoptimized
+              src={gifURL}
+              width={400}
+              height={400}
               alt="Funny copy-paste"
               className="rounded-lg  shadow-lg"
             />
