@@ -34,10 +34,10 @@ const Questions = () => {
   return (
     <Card className="bg-zinc-900 border-zinc-800">
       <CardHeader>
-        <CardTitle className="text-white">Questions</CardTitle>
+        <CardTitle className="text-white text-lg">Questions</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[60vh] pr-4">
+        <ScrollArea className=" pr-4">
           <div className="space-y-4">
             {questions.map((question) => (
               <Card
@@ -47,11 +47,11 @@ const Questions = () => {
                 }`}
               >
                 <CardHeader>
-                  <CardTitle className="text-white text-xl">
+                  <CardTitle className="text-white text-base">
                     {question.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-zinc-300 text-sm">
+                <CardContent className="text-zinc-300 text-base">
                   {question.content}
                 </CardContent>
               </Card>

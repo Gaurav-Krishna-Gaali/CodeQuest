@@ -21,7 +21,6 @@ const CodeEditor = () => {
   const callAPI = async () => {
     try {
       const res = await fetch(
-        // PS: this is not my API key, feel free to steal! (Found it on docs)
         `https://g.tenor.com/v1/random?q=brahmi&key=LIVDSRZULELA`
       );
       const data = await res.json();
@@ -35,7 +34,8 @@ const CodeEditor = () => {
       console.log(err);
     }
   };
-  const onMount = (editor, monaco) => {
+
+  const onMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
 
@@ -53,58 +53,58 @@ const CodeEditor = () => {
   };
 
   return (
-    <Card className="bg-zinc-900 border-zinc-800 flex flex-col">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-white">Code Editor</CardTitle>
-        <Button className="bg-blue-800 hover:bg-blue-700" onClick={callAPI}>
-          Run Code
-        </Button>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle className="font-bold text-black">
-                Oops! Copy-Paste Alert!
-              </DialogTitle>
-              <DialogDescription className="font-normal text-black">
-                Looks like you went full Ctrl+C, Ctrl+V on me! 🚨 No worries, it
-                happens to the best of us. Let’s keep it spicy and original next
-                time! 🌶️
-              </DialogDescription>
-            </DialogHeader>
-            <Image
-              unoptimized
-              src={gifURL}
-              width={400}
-              height={400}
-              alt="Funny copy-paste"
-              className="rounded-lg  shadow-lg"
-            />
-            <DialogFooter>
-              <Button type="submit" onClick={() => setOpen(false)}>
-                You got me lol! 😂
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </CardHeader>
-      <CardContent className="flex-1 p-0">
-        <Editor
-          height="100%"
-          theme="vs-dark"
-          defaultLanguage="python"
-          //   value={code}
-          onMount={onMount}
-          options={{
-            minimap: { enabled: false },
-            fontSize: 14,
-            contextmenu: false,
-            lineNumbers: "on",
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-          }}
-        />
-      </CardContent>
-    </Card>
+    <div className="h-full flex flex-col">
+      <Card className="bg-zinc-900 border-zinc-800 flex flex-col flex-1">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-white text-base">Code Editor</CardTitle>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle className="font-bold text-black">
+                  Oops! Copy-Paste Alert!
+                </DialogTitle>
+                <DialogDescription className="font-normal text-black">
+                  Looks like you went full Ctrl+C, Ctrl+V on me! 🚨 No worries,
+                  it happens to the best of us. Let’s keep it spicy and original
+                  next time! 🌶️
+                </DialogDescription>
+              </DialogHeader>
+              {gifURL && (
+                <Image
+                  unoptimized
+                  src={gifURL}
+                  width={400}
+                  height={400}
+                  alt="Funny copy-paste"
+                  className="rounded-lg shadow-lg"
+                />
+              )}
+              <DialogFooter>
+                <Button type="submit" onClick={() => setOpen(false)}>
+                  You got me lol! 😂
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </CardHeader>
+        <CardContent className="flex-1 p-0 overflow-hidden">
+          <Editor
+            height="100%"
+            theme="vs-dark"
+            defaultLanguage="python"
+            onMount={onMount}
+            options={{
+              minimap: { enabled: false },
+              fontSize: 14,
+              contextmenu: false,
+              lineNumbers: "on",
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+            }}
+          />
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
