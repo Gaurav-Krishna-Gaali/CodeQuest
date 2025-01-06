@@ -2,6 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Editor } from "@monaco-editor/react";
+
+import { editor } from "monaco-editor";
+
 import React, { useState, useRef } from "react";
 import {
   Dialog,
@@ -16,7 +19,7 @@ import Image from "next/image";
 const CodeEditor = () => {
   const [open, setOpen] = useState(false);
   const [gifURL, setGifUrl] = useState("");
-  const editorRef = useRef(null);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const callAPI = async () => {
     try {
@@ -35,7 +38,7 @@ const CodeEditor = () => {
     }
   };
 
-  const onMount = (editor) => {
+  const onMount = (editor: editor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
     editor.focus();
 
@@ -53,7 +56,7 @@ const CodeEditor = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className=" flex flex-col">
       <Card className="bg-zinc-900 border-zinc-800 flex flex-col flex-1">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-white text-base">Code Editor</CardTitle>
