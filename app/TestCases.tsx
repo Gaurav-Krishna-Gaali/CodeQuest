@@ -1,11 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface TestCase {
   id: number;
   input: string;
-  expectedOutput: string;
+  expected_output: string;
   actualOutput?: string;
   status?: "pending" | "success" | "error";
 }
@@ -32,8 +32,30 @@ const initialTestCases: TestCase[] = [
   },
 ];
 
-const TestCases = () => {
-  const [testCases] = useState<TestCase[]>(initialTestCases);
+const TestCases = ({ selectedQuestion, setSelectedQuestion }) => {
+  const [testCases, setTestCases] = useState<TestCase[]>(initialTestCases);
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      if (selectedQuestion != null) {
+        try {
+          const response = await fetch(
+            `http://localhost:8000/questions/${selectedQuestion.id}/test_cases`
+          );
+          const data = await response.json();
+          console.log(data);
+          setTestCases(data);
+          // setLoading(false);
+        } catch (error) {
+          console.error("Error fetching questions:", error);
+          // setLoading(false);
+        }
+      } else {
+      }
+    }
+
+    fetchQuestions();
+  }, [selectedQuestion]);
 
   return (
     <Card className="bg-zinc-900 border-zinc-800">
@@ -59,7 +81,7 @@ const TestCases = () => {
                 >
                   <td className="py-2 px-2">{testCase.id}</td>
                   <td className="py-2 px-2">{testCase.input}</td>
-                  <td className="py-2 px-2">{testCase.expectedOutput}</td>
+                  <td className="py-2 px-2">{testCase.expected_output}</td>
                   <td className="py-2 px-2">
                     <span
                       className={`px-2 py-1 text-xs rounded font-medium ${
