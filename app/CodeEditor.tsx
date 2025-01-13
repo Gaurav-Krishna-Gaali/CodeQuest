@@ -2,9 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Editor } from "@monaco-editor/react";
-
 import { editor } from "monaco-editor";
-
 import React, { useState, useRef } from "react";
 import {
   Dialog,
@@ -15,9 +13,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import Logs from "./Logs";
+import axios from "axios";
 
 const CodeEditor = () => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [output, setOutput] = useState<string | null>(null);
+  const [showLogs, setShowLogs] = useState(false);
   const [gifURL, setGifUrl] = useState("");
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
@@ -55,8 +58,39 @@ const CodeEditor = () => {
     });
   };
 
+  const runcode = async () => {
+    if (!editorRef.current) return;
+
+    const code = editorRef.current.getValue();
+    const language = "python";
+    const version = "*";
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://emkc.org/api/v2/piston/execute",
+        {
+          language,
+          version,
+          files: [{ content: code }],
+          stdin: "",
+        }
+      );
+      console.log(response.data);
+      setOutput(
+        response.data.run.stdout || response.data.run.stderr || "No output"
+      );
+      setShowLogs(true);
+    } catch (error) {
+      console.error("Error running code:", error);
+      setOutput("An error occurred while running the code.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className=" flex flex-col">
+    <div className=" relative flex flex-col h-full">
       <Card className="bg-zinc-900 border-zinc-800 flex flex-col flex-1">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-white text-base">Code Editor</CardTitle>
@@ -89,8 +123,11 @@ const CodeEditor = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          <Button className="bg-zinc-500" onClick={runcode} disabled={loading}>
+            {loading ? "Running..." : "Run "}
+          </Button>
         </CardHeader>
-        <CardContent className="flex-1 p-0 overflow-hidden">
+        <CardContent className="flex-1 p-0 overflow-hidden flex flex-col relative">
           <Editor
             height="100%"
             theme="vs-dark"
@@ -106,7 +143,23 @@ const CodeEditor = () => {
             }}
           />
         </CardContent>
+        {/* {output && <Logs output={output} />} */}
       </Card>
+      {showLogs && (
+        <div className="absolute bottom-0 left-0 right-0 bg-black/90 text-white p-4 shadow-lg max-h-64 overflow-auto transition-transform transform translate-y-0">
+          <div className="flex justify-between items-center mb-2">
+            <span className="font-semibold">Logs</span>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setShowLogs(false)}
+            >
+              Close
+            </Button>
+          </div>
+          <pre className="text-sm">{output}</pre>
+        </div>
+      )}
     </div>
   );
 };
