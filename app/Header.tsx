@@ -12,14 +12,6 @@ const Header = () => {
       </div>
       <div className="flex items-center gap-2">
         <Button size="icon">
-          <Play className="h-5 w-5" />
-        </Button>
-        <Button size="icon">
-          <Save className="h-5 w-5" />
-        </Button>
-      </div>
-      <div className="flex items-center gap-2">
-        <Button size="icon">
           <Settings className="h-5 w-5" />
         </Button>
       </div>
