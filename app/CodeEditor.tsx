@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import Logs from "./Logs";
 import axios from "axios";
+import { Play, Save, Loader } from "lucide-react";
 
 const CodeEditor = () => {
   const [open, setOpen] = useState(false);
@@ -123,9 +124,27 @@ const CodeEditor = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <Button className="bg-zinc-500" onClick={runcode} disabled={loading}>
-            {loading ? "Running..." : "Run "}
-          </Button>
+          <div className="flex items-center gap-4">
+            {/* Run Button */}
+            <Button
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+              onClick={runcode}
+              disabled={loading}
+            >
+              {loading ? (
+                <Loader className="h-5 w-5" />
+              ) : (
+                <Play className="h-5 w-5" />
+              )}
+
+              {loading ? "Running..." : "Run "}
+            </Button>
+
+            <Button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
+              <Save className="h-5 w-5" />
+              <span>Submit</span>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="flex-1 p-0 overflow-hidden flex flex-col relative">
           <Editor
