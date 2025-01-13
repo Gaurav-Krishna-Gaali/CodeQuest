@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -8,7 +8,7 @@ interface Question {
   content: string;
 }
 
-const questions: Question[] = [
+const questions_s: Question[] = [
   {
     id: 1,
     title: "Question 1",
@@ -114,14 +114,29 @@ const questions: Question[] = [
   },
 ];
 
-const Questions = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
-    null
-  );
+const Questions = ({ selectedQuestion, setSelectedQuestion }) => {
+  const [questions, setQuestions] = useState<Question | null>([]);
 
   const handleQuestionClick = (question: Question) => {
     setSelectedQuestion((prev) => (prev?.id === question.id ? null : question));
   };
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      try {
+        const response = await fetch("http://localhost:8000/questions");
+        const data = await response.json();
+        console.log(data);
+        setQuestions(data);
+        // setLoading(false);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        // setLoading(false);
+      }
+    }
+
+    fetchQuestions();
+  }, [selectedQuestion]);
 
   return (
     <Card className="bg-zinc-900 border-zinc-800">
@@ -129,7 +144,7 @@ const Questions = () => {
         <CardTitle className="text-white text-lg">Questions</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className=" h-[40vh] pr-4 ">
+        <ScrollArea className=" h-[50vh] pr-4 ">
           <div className="space-y-4">
             {questions.map((question) => (
               <Card
@@ -160,7 +175,7 @@ const Questions = () => {
                   </CardHeader>
                   {selectedQuestion?.id === question.id && (
                     <CardContent className="text-zinc-100 text-sm">
-                      {question.content}
+                      {question.description}
                     </CardContent>
                   )}
                 </div>
