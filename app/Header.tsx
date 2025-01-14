@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Play, Save, Settings } from "lucide-react";
 import React from "react";
+import Login from "./Login";
 
 const Header = () => {
   return (
@@ -11,9 +12,10 @@ const Header = () => {
         <span className="text-xl font-bold text-white">CodeQuest</span>
       </div>
       <div className="flex items-center gap-2">
-        <Button size="icon">
+        {/* <Button size="icon">
           <Settings className="h-5 w-5" />
-        </Button>
+        </Button> */}
+        <Login />
       </div>
     </header>
   );
