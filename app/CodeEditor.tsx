@@ -90,6 +90,66 @@ const CodeEditor = () => {
     }
   };
 
+  // async function submitSolution(questionId: number) {
+  //   const code = JSON.stringify(editorRef.current?.getValue() ?? "");
+
+  //   const response = await fetch("http://localhost:8000/submit-solution", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       question_id: questionId,
+  //       code: code,
+  //       language: "python",
+  //       version: "3.10.0",
+  //     }),
+  //   });
+
+  //   const result = await response.json();
+  //   setShowLogs(true);
+  //   console.log(result);
+  //   // setOutput(response.results || response.results || "No output");
+  // }
+
+  async function submitSolution(questionId: number) {
+    const code = editorRef.current?.getValue() ?? "";
+
+    try {
+      const response = await fetch("http://localhost:8000/submit-solution", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question_id: questionId,
+          code: code,
+          language: "python",
+          version: "3.10.0",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setOutput(
+        `Passed: ${result.passed}\nFailed: ${result.failed}\n\nDetails:\n` +
+          result.results
+            .map(
+              (res: any) =>
+                `Input: ${res.input}\nExpected: ${res.expected_output}\nOutput: ${res.output}\nStatus: ${res.status}\n`
+            )
+            .join("\n")
+      );
+      setShowLogs(true);
+    } catch (error) {
+      console.error("Error submitting solution:", error);
+      setOutput("An error occurred while submitting the solution.");
+    }
+  }
+
   return (
     <div className=" relative flex flex-col h-full">
       <Card className="bg-zinc-900 border-zinc-800 flex flex-col flex-1">
@@ -127,7 +187,7 @@ const CodeEditor = () => {
           <div className="flex items-center gap-4">
             {/* Run Button */}
             <Button
-              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg "
               onClick={runcode}
               disabled={loading}
             >
@@ -136,11 +196,15 @@ const CodeEditor = () => {
               ) : (
                 <Play className="h-5 w-5" />
               )}
-
-              {loading ? "Running..." : "Run "}
+              <div className=" font-bold ">
+                {loading ? "Running..." : "Run "}
+              </div>
             </Button>
 
-            <Button className="box-border relative z-30 inline-flex items-center justify-center w-auto px-3 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1   hover:ring-offset-indigo-500 ease focus:outline-none">
+            <Button
+              onClick={() => submitSolution(1)}
+              className="box-border relative z-30 inline-flex items-center justify-center w-auto px-3 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1   hover:ring-offset-indigo-500 ease focus:outline-none"
+            >
               <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
               <span className="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
               <span className="relative z-20 flex items-center text-sm">
@@ -156,6 +220,7 @@ const CodeEditor = () => {
             theme="vs-dark"
             defaultLanguage="python"
             onMount={onMount}
+            value="## Write your code here... "
             options={{
               minimap: { enabled: false },
               fontSize: 14,
@@ -166,7 +231,6 @@ const CodeEditor = () => {
             }}
           />
         </CardContent>
-        {/* {output && <Logs output={output} />} */}
       </Card>
       {showLogs && (
         <div className="absolute bottom-0 left-0 right-0 bg-black/90 text-white p-4 shadow-lg max-h-64 overflow-auto transition-transform transform translate-y-0">
