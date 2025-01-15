@@ -17,6 +17,33 @@ const Login = () => {
     }
   };
 
+  const logintoDB = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const response = await fetch("http://localhost:8000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user?.email,
+          username: user.user_metadata.full_name || user.email,
+          profile_pic: user?.user_metadata?.avatar_url,
+          provider: "google",
+          provider_id: user.id,
+        }),
+      });
+      if (!response.ok) {
+        console.error("Error saving user data:", await response.text());
+      } else {
+        console.log("User logged in and data saved successfully");
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
       const {
@@ -26,6 +53,7 @@ const Login = () => {
     };
 
     fetchUser();
+    logintoDB();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {

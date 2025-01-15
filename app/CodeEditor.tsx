@@ -13,7 +13,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import Logs from "./Logs";
 import axios from "axios";
 import { Play, Save, Loader } from "lucide-react";
 
