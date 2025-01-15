@@ -17,7 +17,7 @@ import Logs from "./Logs";
 import axios from "axios";
 import { Play, Save, Loader } from "lucide-react";
 
-const CodeEditor = () => {
+const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
@@ -90,65 +90,46 @@ const CodeEditor = () => {
     }
   };
 
-  // async function submitSolution(questionId: number) {
-  //   const code = JSON.stringify(editorRef.current?.getValue() ?? "");
+  const submitSolution = async () => {
+    if (!editorRef.current) return;
 
-  //   const response = await fetch("http://localhost:8000/submit-solution", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       question_id: questionId,
-  //       code: code,
-  //       language: "python",
-  //       version: "3.10.0",
-  //     }),
-  //   });
+    const code = editorRef.current.getValue();
+    const questionId = selectedQuestion?.id;
 
-  //   const result = await response.json();
-  //   setShowLogs(true);
-  //   console.log(result);
-  //   // setOutput(response.results || response.results || "No output");
-  // }
+    if (!code) {
+      alert("Please write some code before submitting.");
+      return;
+    }
+    if (!questionId) {
+      alert("Please select a question before submitting.");
+      return;
+    }
 
-  async function submitSolution(questionId: number) {
-    const code = editorRef.current?.getValue() ?? "";
-
+    setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/submit-solution", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        "http://localhost:8000/submit-solution",
+        {
           question_id: questionId,
           code: code,
           language: "python",
           version: "3.10.0",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-
-      const result = await response.json();
-      setOutput(
-        `Passed: ${result.passed}\nFailed: ${result.failed}\n\nDetails:\n` +
-          result.results
-            .map(
-              (res: any) =>
-                `Input: ${res.input}\nExpected: ${res.expected_output}\nOutput: ${res.output}\nStatus: ${res.status}\n`
-            )
-            .join("\n")
+        }
       );
-      setShowLogs(true);
+
+      console.log(response.data);
+      if (response.status === 200) {
+        setTestResults(response.data);
+      } else {
+        alert("Something went wrong.");
+      }
     } catch (error) {
       console.error("Error submitting solution:", error);
-      setOutput("An error occurred while submitting the solution.");
+      alert("An error occurred while submitting your solution.");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className=" relative flex flex-col h-full">

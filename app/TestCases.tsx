@@ -1,61 +1,57 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 interface TestCase {
   id: number;
   input: string;
   expected_output: string;
-  actualOutput?: string;
+  actual_output?: string;
   status?: "pending" | "success" | "error";
 }
-
 const initialTestCases: TestCase[] = [
   {
     id: 1,
     input: "[1, 2, 3]",
-    expectedOutput: "6",
+    expected_output: "6",
     status: "success",
   },
   {
     id: 2,
     input: "[4, 5, 6]",
-    expectedOutput: "15",
+    expected_output: "15",
     status: "error",
-    actualOutput: "12", // Example incorrect output
+    actual_output: "12",
   },
   {
     id: 3,
     input: "[7, 8, 9]",
-    expectedOutput: "24",
+    expected_output: "15",
+    actual_output: "24",
     status: "pending",
   },
 ];
 
-const TestCases = ({ selectedQuestion, setSelectedQuestion }) => {
+const TestCases = ({ testResults, selectedQuestion }) => {
   const [testCases, setTestCases] = useState<TestCase[]>(initialTestCases);
 
-  useEffect(() => {
-    async function fetchQuestions() {
-      if (selectedQuestion != null) {
-        try {
-          const response = await fetch(
-            `http://localhost:8000/questions/${selectedQuestion.id}/test_cases`
-          );
-          const data = await response.json();
-          console.log(data);
-          setTestCases(data);
-          // setLoading(false);
-        } catch (error) {
-          console.error("Error fetching questions:", error);
-          // setLoading(false);
-        }
-      } else {
-      }
+  React.useEffect(() => {
+    if (testResults) {
+      const updatedTestCases = testResults.map((testCase) => ({
+        id: testCase.id,
+        input: testCase.input,
+        expected_output: testCase.expected_output,
+        actual_output: testCase.actual_output,
+        status:
+          testCase.pass == true
+            ? "success"
+            : testCase.pass == false
+            ? "error"
+            : "pending",
+      }));
+      setTestCases(updatedTestCases);
     }
-
-    fetchQuestions();
-  }, [selectedQuestion]);
+  }, [testResults]);
 
   return (
     <Card className="bg-zinc-900 border-zinc-800">
@@ -96,7 +92,7 @@ const TestCases = ({ selectedQuestion, setSelectedQuestion }) => {
                     </span>
                     {testCase.status === "error" && (
                       <div className="text-xs mt-1 text-red-400">
-                        Actual: {testCase.actualOutput}
+                        Actual: {testCase.actual_output}
                       </div>
                     )}
                   </td>
