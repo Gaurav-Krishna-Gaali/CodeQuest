@@ -20,6 +20,7 @@ import { supabase } from "../utils/supabase/supabase";
 const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [showLogs, setShowLogs] = useState(false);
   const [gifURL, setGifUrl] = useState("");
@@ -114,7 +115,7 @@ const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
       return;
     }
 
-    setLoading(true);
+    setSubmitting(true);
     try {
       const response = await axios.post(
         "http://localhost:8000/submit-solution",
@@ -136,7 +137,7 @@ const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
       console.error("Error submitting solution:", error);
       alert("An error occurred while submitting your solution.");
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -198,8 +199,12 @@ const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
               <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
               <span className="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
               <span className="relative z-20 flex items-center text-sm">
-                <Save className="h-5 w-5 mr-2" />
-                Submit
+                {submitting ? (
+                  <Loader className="h-5 w-5" />
+                ) : (
+                  <Save className="h-5 w-5 mr-2" />
+                )}
+                {submitting ? "Submitting..." : "Submit"}
               </span>
             </Button>
           </div>

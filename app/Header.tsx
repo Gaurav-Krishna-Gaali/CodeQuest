@@ -1,6 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Play, Save, Settings } from "lucide-react";
 import React from "react";
 import Login from "./Login";
 
@@ -12,9 +10,6 @@ const Header = () => {
         <span className="text-xl font-bold text-white">CodeQuest</span>
       </div>
       <div className="flex items-center gap-2">
-        {/* <Button size="icon">
-          <Settings className="h-5 w-5" />
-        </Button> */}
         <Login />
       </div>
     </header>
