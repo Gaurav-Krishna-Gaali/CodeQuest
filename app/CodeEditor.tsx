@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import axios from "axios";
 import { Play, Save, Loader } from "lucide-react";
+import { supabase } from "../utils/supabase/supabase";
 
 const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
   const [open, setOpen] = useState(false);
@@ -104,18 +105,27 @@ const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
       return;
     }
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      alert("Login to submit your solution.");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:8000/submit-solution",
         {
-          question_id: questionId,
+          question_id: selectedQuestion?.id,
+          provider_id: user.id,
           code: code,
           language: "python",
           version: "3.10.0",
         }
       );
-
       console.log(response.data);
       if (response.status === 200) {
         setTestResults(response.data);
@@ -182,7 +192,7 @@ const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
             </Button>
 
             <Button
-              onClick={() => submitSolution(1)}
+              onClick={() => submitSolution()}
               className="box-border relative z-30 inline-flex items-center justify-center w-auto px-3 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-indigo-600 rounded-md cursor-pointer group ring-offset-2 ring-1   hover:ring-offset-indigo-500 ease focus:outline-none"
             >
               <span className="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>

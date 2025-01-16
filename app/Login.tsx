@@ -7,7 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Login = () => {
   const [user, setUser] = useState<User | null>(null); // Define user state with Supabase User type
-  //   const router = useRouter();
+  // const router = useRouter();
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
