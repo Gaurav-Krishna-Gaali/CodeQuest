@@ -5,11 +5,13 @@ import CodeEditor from "./CodeEditor";
 import Questions from "./Questions";
 import TestCases from "./TestCases";
 import { supabase } from "../utils/supabase/supabase";
+import Confetti from "react-confetti";
 
 const Page = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [testResults, setTestResults] = useState<any[]>([]);
   const [solutions, setSolutions] = useState<any[]>([]);
+  const [showconfetti, setShowConfetti] = useState(false);
 
   const fetchTestCases = async (questionId: number) => {
     try {
@@ -51,10 +53,19 @@ const Page = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col">
+      {showconfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={600}
+          recycle={false}
+          run={showconfetti}
+        />
+      )}
       <Header />
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-[2fr,1fr]  gap-4 p-4 overflow-hidden">
         <CodeEditor
-          solutions={solutions}
+          setShowConfetti={setShowConfetti}
           fetchSubmittedSolutions={fetchSubmittedSolutions}
           selectedQuestion={selectedQuestion}
           testResults={testResults}

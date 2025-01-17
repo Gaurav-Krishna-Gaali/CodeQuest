@@ -143,10 +143,8 @@ const Questions = ({ solutions, selectedQuestion, setSelectedQuestion }) => {
       const data = await response.json();
       console.log(data);
       setQuestions(data);
-      // setLoading(false);
     } catch (error) {
       console.error("Error fetching questions:", error);
-      // setLoading(false);
     }
   }
   useEffect(() => {

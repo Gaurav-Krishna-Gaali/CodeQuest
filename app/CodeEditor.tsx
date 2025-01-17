@@ -18,6 +18,7 @@ import { Play, Save, Loader } from "lucide-react";
 import { supabase } from "../utils/supabase/supabase";
 
 const CodeEditor = ({
+  setShowConfetti,
   fetchSubmittedSolutions,
   selectedQuestion,
   testResults,
@@ -136,6 +137,16 @@ const CodeEditor = ({
       fetchSubmittedSolutions();
       if (response.status === 200) {
         setTestResults(response.data);
+        const allTestsPassed = response.data.every(
+          (test: { pass: boolean }) => test.pass === true
+        );
+
+        if (allTestsPassed) {
+          setShowConfetti(true);
+          setTimeout(() => {
+            setShowConfetti(false);
+          }, 5000);
+        }
       } else {
         alert("Something went wrong.");
       }
