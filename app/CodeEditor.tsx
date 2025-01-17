@@ -17,7 +17,12 @@ import axios from "axios";
 import { Play, Save, Loader } from "lucide-react";
 import { supabase } from "../utils/supabase/supabase";
 
-const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
+const CodeEditor = ({
+  fetchSubmittedSolutions,
+  selectedQuestion,
+  testResults,
+  setTestResults,
+}) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -128,6 +133,7 @@ const CodeEditor = ({ selectedQuestion, testResults, setTestResults }) => {
         }
       );
       console.log(response.data);
+      fetchSubmittedSolutions();
       if (response.status === 200) {
         setTestResults(response.data);
       } else {
