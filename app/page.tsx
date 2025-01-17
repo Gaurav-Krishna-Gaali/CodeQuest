@@ -65,6 +65,7 @@ const Page = () => {
       <Header />
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-[2fr,1fr]  gap-4 p-4 overflow-hidden">
         <CodeEditor
+          solutions={solutions}
           setShowConfetti={setShowConfetti}
           fetchSubmittedSolutions={fetchSubmittedSolutions}
           selectedQuestion={selectedQuestion}

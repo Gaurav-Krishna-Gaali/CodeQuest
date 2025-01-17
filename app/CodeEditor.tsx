@@ -18,6 +18,7 @@ import { Play, Save, Loader } from "lucide-react";
 import { supabase } from "../utils/supabase/supabase";
 
 const CodeEditor = ({
+  solutions,
   setShowConfetti,
   fetchSubmittedSolutions,
   selectedQuestion,
@@ -232,7 +233,10 @@ const CodeEditor = ({
             theme="vs-dark"
             defaultLanguage="python"
             onMount={onMount}
-            value="## Write your code here... "
+            value={
+              solutions.find((s) => s.question_id === selectedQuestion?.id)
+                ?.submitted_code || ""
+            }
             options={{
               minimap: { enabled: false },
               fontSize: 14,
