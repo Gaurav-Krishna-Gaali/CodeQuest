@@ -23,19 +23,23 @@ const Login = () => {
     } = await supabase.auth.getUser();
 
     if (user) {
-      const response = await fetch("http://localhost:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: user?.email,
-          username: user.user_metadata.full_name || user.email,
-          profile_pic: user?.user_metadata?.avatar_url,
-          provider: "google",
-          provider_id: user.id,
-        }),
-      });
+      const response = await fetch(
+        // "http://localhost:8000/login"
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user?.email,
+            username: user.user_metadata.full_name || user.email,
+            profile_pic: user?.user_metadata?.avatar_url,
+            provider: "google",
+            provider_id: user.id,
+          }),
+        }
+      );
       if (!response.ok) {
         console.error("Error saving user data:", await response.text());
       } else {

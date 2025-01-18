@@ -135,7 +135,10 @@ const Questions = ({
   };
   async function fetchQuestions() {
     try {
-      const response = await fetch("http://localhost:8000/questions");
+      const response = await fetch(
+        // "http://localhost:8000/questions"
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/questions`
+      );
       const data = await response.json();
       setQuestions(data);
     } catch (error) {

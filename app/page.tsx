@@ -47,7 +47,8 @@ const Page = () => {
     if (user) {
       try {
         const response = await fetch(
-          `http://localhost:8000/solutions/${user.id}`
+          // `http://localhost:8000/solutions/${user.id}`
+          `${process.env.NEXT_PUBLIC_BACKEND_HOST}/solutions/${user.id}`
         );
         const data = await response.json();
         setSolutions(data);

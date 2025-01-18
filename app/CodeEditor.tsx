@@ -134,7 +134,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     setSubmitting(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/submit-solution",
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/submit-solution`,
+        // "http://localhost:8000/submit-solution",
         {
           question_id: selectedQuestion?.id,
           provider_id: user.id,
