@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/supabase/supabase";
 import { Button } from "@/components/ui/button";
-import { useSession } from "@supabase/auth-helpers-react";
-import { useRouter } from "next/router";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
+import type { User } from "@supabase/auth-js";
 
 const Login = () => {
-  const [user, setUser] = useState<User | null>(null); // Define user state with Supabase User type
-  // const router = useRouter();
+  const [user, setUser] = useState<User | null>(null); // Specify the type as User or null
+
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -73,7 +72,6 @@ const Login = () => {
       console.error("Error logging out:", error.message);
     } else {
       setUser(null);
-      // router.push("/");
     }
   };
 
@@ -136,7 +134,7 @@ const Login = () => {
             onClick={handleLogout}
             className="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-800"
           >
-            <LogOut />
+            <LogOut className="h-5 w-5" />
           </Button>
         </div>
       )}

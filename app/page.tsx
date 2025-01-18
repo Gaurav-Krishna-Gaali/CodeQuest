@@ -16,13 +16,15 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TestResult, Solutions, Question } from "@/types/types";
 
 const Page = () => {
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [testResults, setTestResults] = useState<any[]>([]);
-  const [solutions, setSolutions] = useState<any[]>([]);
+  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
+    null
+  );
+  const [testResults, setTestResults] = useState<TestResult[]>([]);
+  const [solutions, setSolutions] = useState<Solutions[] | []>([]);
   const [showconfetti, setShowConfetti] = useState(false);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const fetchTestCases = async (questionId: number) => {
     try {
@@ -77,18 +79,13 @@ const Page = () => {
         <div className="lg:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button
-                className="text-white  px-4 py-2 rounded"
-                onClick={() => setIsSheetOpen(true)}
-              >
+              <Button className="text-white px-4 py-2 rounded">
                 <Menu />
               </Button>
             </SheetTrigger>
             <SheetContent
               side="left"
-              onOpenChange={setIsSheetOpen}
-              open={isSheetOpen}
-              className="bg-black text-white border-zinc-800 "
+              className="bg-black text-white border-zinc-800"
             >
               <SheetHeader>
                 <SheetTitle className="text-white">
@@ -104,10 +101,7 @@ const Page = () => {
                   setSelectedQuestion={setSelectedQuestion}
                   selectedQuestion={selectedQuestion}
                 />
-                <TestCases
-                  testResults={testResults}
-                  selectedQuestion={selectedQuestion}
-                />
+                <TestCases testResults={testResults} />
               </div>
             </SheetContent>
           </Sheet>
@@ -128,10 +122,7 @@ const Page = () => {
             setSelectedQuestion={setSelectedQuestion}
             selectedQuestion={selectedQuestion}
           />
-          <TestCases
-            testResults={testResults}
-            selectedQuestion={selectedQuestion}
-          />
+          <TestCases testResults={testResults} />
         </div>
       </div>
     </div>

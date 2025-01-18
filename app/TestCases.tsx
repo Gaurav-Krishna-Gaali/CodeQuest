@@ -1,14 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TestResult, TestCase } from "@/types/types";
 import React, { useState } from "react";
 
-interface TestCase {
-  id: number;
-  input: string;
-  expected_output: string;
-  actual_output?: string;
-  status?: "pending" | "success" | "error";
-}
 const initialTestCases: TestCase[] = [
   {
     id: 1,
@@ -32,12 +26,12 @@ const initialTestCases: TestCase[] = [
   },
 ];
 
-const TestCases = ({ testResults, selectedQuestion }) => {
+const TestCases = ({ testResults }: { testResults: TestResult[] }) => {
   const [testCases, setTestCases] = useState<TestCase[]>(initialTestCases);
 
   React.useEffect(() => {
     if (testResults) {
-      const updatedTestCases = testResults.map((testCase) => ({
+      const updatedTestCases: TestCase[] = testResults.map((testCase) => ({
         id: testCase.id,
         input: testCase.input,
         expected_output: testCase.expected_output,

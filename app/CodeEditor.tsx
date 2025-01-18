@@ -16,13 +16,23 @@ import Image from "next/image";
 import axios from "axios";
 import { Play, Save, Loader } from "lucide-react";
 import { supabase } from "../utils/supabase/supabase";
+import { Solutions, TestResult } from "@/types/types";
 
-const CodeEditor = ({
+interface CodeEditorProps {
+  solutions: Solutions[];
+  setShowConfetti: (value: boolean) => void;
+  fetchSubmittedSolutions: () => void;
+  selectedQuestion: {
+    id: number;
+  } | null;
+  testResults: TestResult[];
+  setTestResults: (results: TestResult[]) => void;
+}
+const CodeEditor: React.FC<CodeEditorProps> = ({
   solutions,
   setShowConfetti,
   fetchSubmittedSolutions,
   selectedQuestion,
-  testResults,
   setTestResults,
 }) => {
   const [open, setOpen] = useState(false);
