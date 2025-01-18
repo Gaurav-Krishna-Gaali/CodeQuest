@@ -95,7 +95,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           stdin: "",
         }
       );
-      console.log(response.data);
       setOutput(
         response.data.run.stdout || response.data.run.stderr || "No output"
       );
@@ -144,7 +143,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           version: "3.10.0",
         }
       );
-      console.log(response.data);
       fetchSubmittedSolutions();
       if (response.status === 200) {
         setTestResults(response.data);
