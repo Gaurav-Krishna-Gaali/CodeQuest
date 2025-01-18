@@ -6,12 +6,23 @@ import Questions from "./Questions";
 import TestCases from "./TestCases";
 import { supabase } from "../utils/supabase/supabase";
 import Confetti from "react-confetti";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [testResults, setTestResults] = useState<any[]>([]);
   const [solutions, setSolutions] = useState<any[]>([]);
   const [showconfetti, setShowConfetti] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const fetchTestCases = async (questionId: number) => {
     try {
@@ -62,8 +73,47 @@ const Page = () => {
           run={showconfetti}
         />
       )}
-      <Header />
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-[2fr,1fr]  gap-4 p-4 overflow-hidden">
+      <Header>
+        <div className="lg:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                className="text-white  px-4 py-2 rounded"
+                onClick={() => setIsSheetOpen(true)}
+              >
+                <Menu />
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="left"
+              onOpenChange={setIsSheetOpen}
+              open={isSheetOpen}
+              className="bg-black text-white border-zinc-800 "
+            >
+              <SheetHeader>
+                <SheetTitle className="text-white">
+                  Questions and Test Cases
+                </SheetTitle>
+                <SheetDescription>
+                  Manage questions and view test case results here.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="mt-4 space-y-4">
+                <Questions
+                  solutions={solutions}
+                  setSelectedQuestion={setSelectedQuestion}
+                  selectedQuestion={selectedQuestion}
+                />
+                <TestCases
+                  testResults={testResults}
+                  selectedQuestion={selectedQuestion}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </Header>
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-[2fr,1fr]  gap-4 p-4  ">
         <CodeEditor
           solutions={solutions}
           setShowConfetti={setShowConfetti}
@@ -72,7 +122,7 @@ const Page = () => {
           testResults={testResults}
           setTestResults={setTestResults}
         />
-        <div className="space-y-4">
+        <div className="space-y-4 hidden lg:block">
           <Questions
             solutions={solutions}
             setSelectedQuestion={setSelectedQuestion}

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { LogOut } from "lucide-react";
 
 const Login = () => {
   const [user, setUser] = useState<User | null>(null); // Define user state with Supabase User type
@@ -122,7 +123,7 @@ const Login = () => {
         </Button>
       ) : (
         <div className="flex items-center gap-4">
-          <Avatar className="outline outline-offset-2 outline-4 outline-zinc-800">
+          <Avatar className="outline outline-offset-2 outline-4 outline-zinc-800 h-9 w-9">
             <AvatarImage
               src={user?.user_metadata?.avatar_url || ""}
               alt="User Avatar"
@@ -135,7 +136,7 @@ const Login = () => {
             onClick={handleLogout}
             className="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-800"
           >
-            Logout
+            <LogOut />
           </Button>
         </div>
       )}
