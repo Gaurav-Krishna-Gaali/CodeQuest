@@ -68,8 +68,8 @@ const Page = () => {
     <div className="min-h-screen bg-zinc-950 flex flex-col">
       {showconfetti && (
         <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
+          width={window.innerWidth - 20}
+          height={window.innerHeight - 20}
           numberOfPieces={600}
           recycle={false}
           run={showconfetti}
