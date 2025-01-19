@@ -64,12 +64,12 @@ const TestCases = ({ testResults }: { testResults: TestResult[] }) => {
               </tr>
             </thead>
             <tbody>
-              {testCases.map((testCase) => (
+              {testCases.map((testCase, index) => (
                 <tr
                   key={testCase.id}
                   className="border-b border-zinc-800 hover:bg-zinc-800"
                 >
-                  <td className="py-2 px-2">{testCase.id}</td>
+                  <td className="py-2 px-2">{index + 1}</td>
                   <td className="py-2 px-2">{testCase.input}</td>
                   <td className="py-2 px-2">{testCase.expected_output}</td>
                   <td className="py-2 px-2">
