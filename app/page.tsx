@@ -29,7 +29,7 @@ const Page = () => {
   const fetchTestCases = async (questionId: number) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/${questionId}/test_cases`
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST}/questions/${questionId}/test_cases`
         // `http://localhost:8000/questions/${questionId}/test_cases`
       );
       const data = await response.json();
