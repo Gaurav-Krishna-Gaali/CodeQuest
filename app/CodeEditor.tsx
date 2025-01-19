@@ -29,6 +29,16 @@ interface CodeEditorProps {
   testResults: TestResult[];
   setTestResults: (results: TestResult[]) => void;
 }
+
+const defaultCode = `def main(a):
+    # Write your code here
+    
+    return a
+    
+# Do not disturb the below snippet; it would be used for evaluation at the server
+if __name__ == "__main__":
+  print(main(input()))`;
+
 const CodeEditor: React.FC<CodeEditorProps> = ({
   solutions,
   setShowConfetti,
@@ -255,9 +265,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             theme="vs-dark"
             defaultLanguage="python"
             onMount={onMount}
+            defaultValue={defaultCode}
             value={
               solutions.find((s) => s.question_id === selectedQuestion?.id)
-                ?.submitted_code || ""
+                ?.submitted_code || defaultCode
             }
             options={{
               minimap: { enabled: false },
