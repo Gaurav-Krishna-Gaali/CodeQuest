@@ -75,4 +75,14 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  /* Hide scrollbar */
+  .scroll-container {
+    overflow-y: scroll; /* Enable vertical scrolling */
+    -ms-overflow-style: none; /* Hide scrollbar for IE */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+  }
+
+  .scroll-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+  }
 }

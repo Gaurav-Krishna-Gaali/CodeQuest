@@ -87,7 +87,7 @@ const Page = () => {
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="bg-black text-white border-zinc-800 w-[90%]"
+              className="bg-black text-white border-zinc-800 w-[90%] scroll-container"
             >
               <SheetHeader>
                 <SheetTitle className="text-white">
