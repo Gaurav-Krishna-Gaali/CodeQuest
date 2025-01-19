@@ -17,6 +17,7 @@ import axios from "axios";
 import { Play, Save, Loader } from "lucide-react";
 import { supabase } from "../utils/supabase/supabase";
 import { Solutions, TestResult } from "@/types/types";
+import AlertModal from "@/components/ui/alert-modal";
 
 interface CodeEditorProps {
   solutions: Solutions[];
@@ -41,6 +42,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const [output, setOutput] = useState<string | null>(null);
   const [showLogs, setShowLogs] = useState(false);
   const [gifURL, setGifUrl] = useState("");
+  const [errmodal, setErrModal] = useState(false);
+  const [errbody, setErrBody] = useState("");
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const callAPI = async () => {
@@ -114,11 +117,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     const questionId = selectedQuestion?.id;
 
     if (!code) {
-      alert("Please write some code before submitting.");
+      setErrModal(true);
+      setErrBody("Please write some code before submitting.");
       return;
     }
     if (!questionId) {
-      alert("Please select a question before submitting.");
+      setErrModal(true);
+      setErrBody("Please select a question before submitting.");
       return;
     }
 
@@ -127,7 +132,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     } = await supabase.auth.getUser();
 
     if (!user) {
-      alert("Login to submit your solution.");
+      setErrModal(true);
+      setErrBody("Please login to submit your solution.");
       return;
     }
 
@@ -158,11 +164,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           }, 5000);
         }
       } else {
-        alert("Something went wrong.");
+        setErrModal(true);
+        setErrBody("An error occurred while submitting your solution.");
       }
     } catch (error) {
       console.error("Error submitting solution:", error);
-      alert("An error occurred while submitting your solution.");
+      setErrModal(true);
+      setErrBody("An error occurred while submitting your solution.");
     } finally {
       setSubmitting(false);
     }
@@ -173,6 +181,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       <Card className="bg-zinc-900 border-zinc-800 flex flex-col flex-1">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-white text-base">Code Editor</CardTitle>
+          <AlertModal
+            errmodal={errmodal}
+            setErrModal={setErrModal}
+            body={errbody}
+          />
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
