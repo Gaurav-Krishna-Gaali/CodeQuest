@@ -31,13 +31,42 @@ interface CodeEditorProps {
 }
 
 const defaultCode = `def main(a):
-    # Write your code here
-    
-    return a
-    
-# Do not disturb the below snippet; it would be used for evaluation at the server
+        # Write your code here
+
+        return a
+
+    # Do not disturb the below snippet; it would be used for evaluation at the server
+    if __name__ == "__main__":
+      print(main(input()))`;
+
+const defaultCode1 = `def main(inp):
+    # Returns the sum of elements in the input list
+    return sum(inp)
+
+# Use the following to test with predefined input and run the code
 if __name__ == "__main__":
-  print(main(input()))`;
+    a = [2, 3]  # Predefined input list
+    print(main(a))  # Print the sum of the list
+
+# For submission, comment out lines 6-9 and uncomment lines 13-14 to test against the defined test cases
+# Uncomment below to submit the solution with dynamic input
+# if __name__ == "__main__":
+#     print(main(input()))  # Read input and print the sum`;
+
+const defaultCode2 = `def main(num):
+    # Check if the number is a palindrome
+    str_num = str(num)
+    return str_num == str_num[::-1]
+
+# Use the following to test with a predefined input (uncomment to test)
+# if __name__ == "__main__":
+#     a = -121  # Predefined input number
+#     print(main(a))  # Check if the number is a palindrome
+
+# Use this for submitting the solution and running against test cases
+if __name__ == "__main__":
+    print(main(input()))  # Read input and check if it's a palindrome
+`;
 
 const CodeEditor: React.FC<CodeEditorProps> = ({
   solutions,
@@ -268,7 +297,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             defaultValue={defaultCode}
             value={
               solutions.find((s) => s.question_id === selectedQuestion?.id)
-                ?.submitted_code || defaultCode
+                ?.submitted_code ||
+              (selectedQuestion?.id == 1
+                ? defaultCode1
+                : selectedQuestion?.id == 2
+                ? defaultCode2
+                : defaultCode)
             }
             options={{
               minimap: { enabled: false },
