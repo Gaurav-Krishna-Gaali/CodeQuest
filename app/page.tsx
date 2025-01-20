@@ -60,8 +60,8 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchSubmittedSolutions();
     if (selectedQuestion != null) {
+      fetchSubmittedSolutions();
       fetchTestCases(selectedQuestion.id);
     }
   }, [selectedQuestion]);
