@@ -48,7 +48,7 @@ if __name__ == "__main__":
     a = [2, 3]  # Predefined input list
     print(main(a))  # Print the sum of the list
 
-# For submission, comment out lines 6-9 and uncomment lines 13-14 to test against the defined test cases
+# For submission, comment out lines 6-8 and uncomment lines 12-13 to test against the defined test cases
 # Uncomment below to submit the solution with dynamic input
 # if __name__ == "__main__":
 #     print(main(input()))  # Read input and print the sum`;

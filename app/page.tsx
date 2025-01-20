@@ -72,7 +72,7 @@ const Page = () => {
         <Confetti
           width={window.innerWidth - 20}
           height={window.innerHeight - 20}
-          numberOfPieces={600}
+          numberOfPieces={1000}
           recycle={false}
           run={showconfetti}
         />
