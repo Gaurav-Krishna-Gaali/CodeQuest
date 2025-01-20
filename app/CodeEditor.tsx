@@ -35,9 +35,9 @@ const defaultCode = `def main(a):
 
     return a
 
-    # Do not disturb the below snippet; it would be used for evaluation at the server
-    if __name__ == "__main__":
-        print(main(input()))`;
+# Do not disturb the below snippet; it would be used for evaluation at the server
+if __name__ == "__main__":
+    print(main(input()))`;
 
 const defaultCode1 = `def main(inp):
     # Returns the sum of elements in the input list
