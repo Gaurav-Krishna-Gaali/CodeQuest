@@ -43,13 +43,13 @@ const defaultCode1 = `def main(inp):
     # Returns the sum of elements in the input list
     return sum(inp)
 
-# Use the following to test with predefined input and run the code
+# Use the following to test with predefined input and run the code (Run Button)
 if __name__ == "__main__":
     a = [2, 3]  # Predefined input list
     print(main(a))  # Print the sum of the list
 
 # For submission, comment out lines 6-8 and uncomment lines 12-13 to test against the defined test cases
-# Uncomment below to submit the solution with dynamic input
+# Uncomment below to submit the solution with dynamic input (Submit Button)
 # if __name__ == "__main__":
 #     print(main(input()))  # Read input and print the sum`;
 
